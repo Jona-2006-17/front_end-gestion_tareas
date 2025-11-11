@@ -8,20 +8,23 @@ export const userService = {
             return Promise.reject(new Error('Información de usuario no encontrada.'));
         }
         const user = JSON.parse(userString);
-
-        // if(user.id_rol !=1){
-        //     if(user.id_rol !=2){
-        //         alert("No tiene permisos");
+        
+        // ejemplo de lo que se puede hacer con datos almacenados
+        // if (user.id_rol != 1){
+        //     if (user.id_rol != 2){
+        //         alert("no tiene permisos");
+        //         // redirigir a otro lado
         //     };
         // };
-        const endpoint = `/users/all_except_admins`;
+        
+        const endpoint = `/users/all-except-admins`;
         
         // La lógica es mucho más simple ahora, solo llamamos a nuestro cliente central.
         return request(endpoint);
     },
     
     /**
-     * Obtener un usuario por su ID.
+     * Obtener un usuario por su email.
      * @param {string} correo - El correo del usuario a buscar.
      * @returns {Promise<object>}
     */
@@ -38,7 +41,7 @@ export const userService = {
      * @returns {Promise<object>}
     */
     updateUser: (userId, userData) => {
-        return request(`/users/by_id/${userId}`, {
+        return request(`/users/by-id/${userId}`, {
         method: 'PUT',
         body: JSON.stringify(userData),
         });
@@ -50,9 +53,9 @@ export const userService = {
      * @param {string | number} userId - El ID del usuario a modificar.
      * @returns {Promise<object>}
      */
-    changeStatusUser: (userId, newStatus) => {
+    changeEstatusUser: (userId, newStatus) => {
         // Nuestro apiClient se encargará de añadir el token de autorización.
-    return request(`/users/cambiar-estado/${userId}?nuevo_estado=${newStatus}`, {
+        return request(`/users/cambiar-estado/${userId}?nuevo_estado=${newStatus}`, {
         method: 'PUT',
         });
     },
