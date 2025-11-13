@@ -5,6 +5,9 @@
 // La importamos para usarla en caso de un error 401.
 import { authService } from './auth.service.js';
 
+
+// const API_BASE_URL = 'https://avisena-eiq4.onrender.com';
+
 const API_BASE_URL = 'https://gestion-tareas-gcbf.onrender.com';
 
 /**
@@ -12,7 +15,7 @@ const API_BASE_URL = 'https://gestion-tareas-gcbf.onrender.com';
  * @param {string} endpoint - El endpoint al que se llamará (ej. '/users/get-by-centro').
  * @param {object} [options={}] - Opciones para la petición fetch (method, headers, body).
  * @returns {Promise<any>} - La respuesta de la API en formato JSON.
- */
+ */                          
 export async function request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
     const token = localStorage.getItem('access_token');
@@ -34,14 +37,13 @@ export async function request(endpoint, options = {}) {
 
         // Manejo centralizado del error 401 (Token inválido/expirado)
         if (response.status === 401) {
-            alert("No tiene permisos"); // Cerramos la sesión
-            //return Promise.reject(new Error('Sesión expirada.'));
+            alert('No tiene permisos');
+            // return Promise.reject(new Error('Sesión expirada.'));
         }
 
-        if (response.status === 403) {
-            alert("Token inválido o expirado");
-            authService.logout(); // Cerramos la sesión
-            //return Promise.reject(new Error('Sesión expirada.'));
+        if (!response.status === 403) {
+            alert('Token inválido');
+            authService.logout();
         }
 
         if (!response.ok) {
