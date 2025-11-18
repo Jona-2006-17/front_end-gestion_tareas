@@ -1,38 +1,46 @@
 // pages/tareas.js
-
+// aca importamos  lo que se comunica con la api , es decir rutas
 import { tareaService } from "../api/tareas.service.js";
-
+// guardar instancias para avbrir y cerrar modales
 let createModalInst = null;
 let editModalInst = null;
+// esto es para que  almacene todas las tareas 
 let cachedTareas = []; // lista actual de tareas cargadas (página actual)
 let currentPage = 1;
 let pageSize = 10;
 let totalPages = 1;
 
-// Helper: obtener usuario desde localStorage (debes tener objeto user almacenado)
+//  obtener usuario desde localStorage ( objeto user almacenado)
 function getCurrentUser() {
+  // lee el json del usuario guardado en el localstore
   const s = localStorage.getItem("user");
   if (!s) return null;
   try {
+    // si se ejecuta convierte ese jd¿son a un objeto
     return JSON.parse(s);
   } catch (err) {
     console.error("Error parseando user desde localStorage:", err);
     return null;
   }
 }
-
+// lo que hace es convertir  l fecha a formato que trae el inout
 function formatDateInputToLocalDatetime(value) {
+  console.log("hola")
   if (!value) return "";
+  // una fecha  que js puede leer
   const d = new Date(value);
   if (isNaN(d)) return "";
+  // pad añade un 0 en las fechas | ej:05
+  // y devuelve todo formateado
   const pad = (n) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
-
+// convierte la fecha en algo legible usando el formato de colombia
 function formatDateDisplay(value) {
   if (!value) return "";
   const d = new Date(value);
   if (isNaN(d)) return value;
+  // se devuelve fecha bonita
   return d.toLocaleString("es-CO");
 }
 
@@ -62,14 +70,14 @@ async function loadPage(page = 1) {
     return;
   }
   tbody.innerHTML = `<tr><td colspan="7" class="text-center">Cargando...</td></tr>`;
-
+  // se recupera usuario actual para ver permisos
   const user = getCurrentUser();
   if (!user) {
     tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Usuario no autenticado.</td></tr>`;
     return;
   }
 
-  // filtros desde UI (safety: compruebo existencia)
+  // compruebo existencia)
   const estadoEl = document.getElementById("filter-estado");
   const fechaIniEl = document.getElementById("filter-fecha-inicio");
   const fechaFinEl = document.getElementById("filter-fecha-fin");
@@ -81,13 +89,15 @@ async function loadPage(page = 1) {
   const search = searchEl ? (searchEl.value || "").toLowerCase() : "";
 
   try {
+    // para capturar errores
     let responseData = null;
 
-    // Si operario -> usamos GET /usuario/{id_usuario}
+    //  usamos GET /usuario/{id_usuario} para que no devuelva otras tareas y solo las de usuario
     if (user.id_rol === 4) {
       const tareas = await tareaService.getByUser(user.id_usuario);
       // Aseguramos que tareas sea un array
       const arr = Array.isArray(tareas) ? tareas : [];
+      // se pagina manualmente ya que al obtener por id las tareas de ese usuario
       responseData = {
         page,
         page_size: arr.length || 0,
@@ -96,7 +106,8 @@ async function loadPage(page = 1) {
         tareas: arr,
       };
     } else {
-      // paginado: usamos endpoint pag
+      // si es otro rol muestra la info paginada
+      // paginado: usamos endpoint pag y el wait espera que la promesa se ejecute antes de seguir
       const pagResp = await tareaService.getPaginated({
         page,
         page_size: pageSize,
@@ -107,32 +118,35 @@ async function loadPage(page = 1) {
       // pagResp debe contener { tareas: [...], total_tareas, total_pages }
       responseData = pagResp || { tareas: [], total_tareas: 0, total_pages: 1 };
     }
-
+    // toma las tareas guardadas para luego poder editarlas
     const tareasList = responseData.tareas || [];
     cachedTareas = tareasList;
 
-    // aplicar filtros cliente: estado y buscador
+    // aplicar filtros 
     let filtered = tareasList;
     if (estadoFilter && estadoFilter !== "all") {
       filtered = filtered.filter((t) => String(t.estado) === String(estadoFilter));
     }
-    if (search) {
+    if (search) { 
+      // convierte todo en minusculas por si escriben en mayuscula y miniscula
       filtered = filtered.filter((t) => t.descripcion && t.descripcion.toLowerCase().includes(search));
     }
-
-    // paginación cliente si endpoint devolvió todo (solo ocurre para operarios o si tu API devuelve todo)
-    let displayed = filtered;
+    console.log("hola")
+    // paginación cliente si endpoint devolvió todo (solo ocurre para operarios ) decide si se muestra o no 
+    let displayed = filtered; 
     if (user.id_rol === 4) {
       totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
       const start = (page - 1) * pageSize;
+      // se utiliza para paginaciomn un inicio y fin
       displayed = filtered.slice(start, start + pageSize);
     } else {
       totalPages = responseData.total_pages || Math.max(1, Math.ceil((responseData.total_tareas || filtered.length) / pageSize));
     }
-
+    // si no  hay tareas muestra mensajes
     if (!displayed || displayed.length === 0) {
       tbody.innerHTML = `<tr><td colspan="7" class="text-center">No se encontraron tareas.</td></tr>`;
     } else {
+      // mapo convierte una fila en listas de textos
       tbody.innerHTML = displayed.map(createTareaRow).join("");
     }
 
