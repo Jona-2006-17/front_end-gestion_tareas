@@ -66,11 +66,11 @@ function convertToCSV(rows, columns) {
     )
     .join("\n");
 
-  return `${header}\n${body}`;
+    return `${header}\n${body}`;
 }
 
 function downloadBlob(content, mimeType, filename) {
-  const blob = new Blob([content], { type: mimeType });
+  const blob = new Blob(["\uFEFF" + content], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -90,7 +90,8 @@ function exportToCSV(data, filename = "metodos_pago.csv") {
   ];
 
   const csv = convertToCSV(data, columns);
-  downloadBlob(csv, "text/csv;charset=utf-8;", filename);
+  downloadBlob(csv, "text/csv;charset=utf-8", filename);
+
 }
 
 async function exportToExcel(data, filename = "metodos_pago.xlsx") {
@@ -196,7 +197,8 @@ async function handleUpdateSubmit(event) {
   try {
     await metodoPagoService.updateMetodoPago(metodoId, updatedData);
     modalInstance.hide();
-    init();
+    await init();  
+    applyFilter();
   } catch (error) {
     console.error(`Error al actualizar método de pago ${metodoId}:`, error);
     alert('No se pudo actualizar el método de pago.');
@@ -225,7 +227,8 @@ async function handleStatusSwitch(event) {
     try {
       await metodoPagoService.changeMetodoPagoStatus(metodoId, newStatus);
       alert(`Método de pago ${newStatus ? 'activado' : 'desactivado'} exitosamente.`);
-      init();
+      await init();
+      applyFilter();
     } catch (error) {
       console.error(`Error al ${actionText} método de pago ${metodoId}:`, error);
       alert(`No se pudo ${actionText} el método de pago.`);
@@ -260,7 +263,8 @@ async function handleCreateSubmit(event) {
   }
     document.getElementById('create-metodo_pago-form').reset();
     alert('Método de pago creado exitosamente.');
-    init();
+    await init();
+    applyFilter();
   } catch (error) {
     console.error('Error al crear método de pago:', error);
     alert('No se pudo crear el método de pago.');
@@ -275,8 +279,16 @@ async function handleCreateSubmit(event) {
 
 async function init() {
 
+  const filterSelect = document.getElementById("filter-metodos");
+    filterSelect.removeEventListener("change", applyFilter);
+    filterSelect.addEventListener("change", applyFilter);
+
   const createModalElement = document.getElementById('create-metodo_pago-modal');
     createModalInstance = new bootstrap.Modal(createModalElement);
+    
+  createModalElement.addEventListener("hidden.bs.modal", () => {
+    document.getElementById("create-metodo_pago-form").reset();
+  });
 
 
   const tableBody = document.getElementById('metodos_pago-table-body');
@@ -321,4 +333,71 @@ async function init() {
   }
 }
 
+
 export { init };
+
+function applyFilter() {
+  const filterValue = document.getElementById("filter-metodos").value;
+  const tableBody = document.getElementById("metodos_pago-table-body");
+
+  if (!allMetodos.length) return;
+
+  if (filterValue === "all") {
+    filteredMetodos = [];
+    tableBody.innerHTML = allMetodos.map(createMetodoPagoRow).join('');
+    return;
+  }
+
+  if (filterValue === "active") {
+    filteredMetodos = allMetodos.filter(m => m.estado === true);
+  }
+
+  if (filterValue === "inactive") {
+    filteredMetodos = allMetodos.filter(m => m.estado === false);
+  }
+
+  tableBody.innerHTML = filteredMetodos.length
+    ? filteredMetodos.map(createMetodoPagoRow).join('')
+    : '<tr><td colspan="5" class="text-center">No hay métodos que coincidan.</td></tr>';
+}
+
+
+// Juanda
+
+// async function cargarMetodosPago() {
+//   try {
+//     const metodosPago = await ventaService.getMetodosPago();
+//     console.log(metodosPago);
+
+//     const selectTipoPago = document.getElementById('edit-tipo-pago');
+
+//     
+//     selectTipoPago.innerHTML = '';
+
+//     if (Array.isArray(metodosPago)) {
+
+//       
+//       const activos = metodosPago.filter(m => m.estado === true);
+
+//       if (activos.length === 0) {
+//         selectTipoPago.innerHTML = '<option disabled>No hay métodos de pago activos</option>';
+//         return;
+//       }
+
+//       // Insertar solo los activos
+//       activos.forEach(metodo => {
+//         const option = document.createElement('option');
+//         option.value = metodo.id_tipo;
+//         option.textContent = metodo.nombre;
+//         selectTipoPago.appendChild(option);
+//       });
+
+//     } else {
+//       selectTipoPago.innerHTML = '<option disabled>No se encontraron métodos de pago</option>';
+//     }
+
+//   } catch (error) {
+//     console.error('Error al cargar los métodos de pago:', error);
+//     alert('Error al cargar los métodos de pago.');
+//   }
+// }

@@ -9,6 +9,13 @@
                 <div class="col-auto">
                     <!-- espacio reservado para filtros si algún día agregas -->
                 </div>
+                <div class="col-auto">
+                    <select id="filter-metodos" class="form-select w-auto">
+                        <option value="all" selected>Todos</option>
+                        <option value="active">Activos</option>
+                        <option value="inactive">Inactivos</option>
+                    </select>
+                </div>
 
                 <div class="col-auto">
                     <div class="btn-group">
@@ -24,7 +31,7 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="col-auto">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create-metodo_pago-modal">
@@ -76,8 +83,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="create-descripcion" class="form-label" >Descripción</label>
-                        <textarea class="form-control" id="create-descripcion" required maxlength="100" rows="3" style="height:auto;"></textarea>
+                        <label for="create-descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="create-descripcion" required maxlength="100" rows="3"
+                            style="height:auto;"></textarea>
                     </div>
 
 
@@ -111,7 +119,8 @@
 
                     <div class="mb-3">
                         <label for="edit-descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="edit-descripcion" required maxlength="100" rows="3" style="height:auto;"></textarea>
+                        <textarea class="form-control" id="edit-descripcion" required maxlength="100" rows="3"
+                            style="height:auto;"></textarea>
                     </div>
 
                     <div class="modal-footer">
@@ -123,5 +132,3 @@
         </div>
     </div>
 </div>
-
-
