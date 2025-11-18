@@ -5,10 +5,9 @@
 // La importamos para usarla en caso de un error 401.
 import { authService } from '../../assets/js/auth.service.js';
 
-<<<<<<< Updated upstream:frontend-proyecto/assets/js/apiClient.js
+
 const API_BASE_URL = 'https://gestion-tareas-gcbf.onrender.com';
-=======
->>>>>>> Stashed changes:frontend-proyecto/js/api/apiClient.js
+
 
 /**
  * Cliente central para realizar todas las peticiones a la API.
