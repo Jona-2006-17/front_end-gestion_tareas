@@ -3,7 +3,7 @@
 
 // La única función que necesitamos importar es la de logout.
 // La importamos para usarla en caso de un error 401.
-import { authService } from './auth.service.js';
+import { authService } from '../../assets/js/auth.service.js';
 
 <<<<<<< Updated upstream:frontend-proyecto/assets/js/apiClient.js
 const API_BASE_URL = 'https://gestion-tareas-gcbf.onrender.com';
