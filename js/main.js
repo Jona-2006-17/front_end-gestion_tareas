@@ -4,7 +4,8 @@ const navLinks = document.querySelector('#app-nav-main');
 
 console.log("main.js cargado. El script principal está listo.");
 
-const loadContent = async (page) => {
+
+export const loadContent = async (page) => {
   console.log(`Paso 2: Se llamó a loadContent con el parámetro: '${page}'`);
   try {
     const response = await fetch(`pages/${page}.html`);
