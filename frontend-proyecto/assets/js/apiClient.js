@@ -8,7 +8,6 @@ import { authService } from './auth.service.js';
 <<<<<<< Updated upstream:frontend-proyecto/assets/js/apiClient.js
 const API_BASE_URL = 'https://gestion-tareas-gcbf.onrender.com';
 =======
-// const API_BASE_URL = 'http://127.0.0.1:8000';
 >>>>>>> Stashed changes:frontend-proyecto/js/api/apiClient.js
 
 /**
