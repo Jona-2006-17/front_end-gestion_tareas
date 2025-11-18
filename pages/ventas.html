@@ -1,0 +1,97 @@
+<div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+        <h1 class="app-page-title mb-0">Ventas</h1>
+    </div>
+
+    <div class="col-auto">
+        <div class="page-utilities">
+            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                <div class="col-auto">
+                    
+                </div>
+
+                <!-- <div class="col-auto">
+                    <select class="form-select w-auto" id="filter-estado">
+                        <option selected value="all">Todos</option>
+                        <option value="active">Activos</option>
+                        <option value="inactive">Inactivos</option>
+                    </select>
+                </div> -->
+
+                <div class="col-auto">
+                    <button class="btn app-btn-secondary" id="export-csv-btn">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                        Exportar CSV
+                    </button>
+                </div>
+
+                <div class="col-auto">
+                    <button id="btnCreateVenta" class="btn btn-primary" data-page="detalles_venta">
+                        + Nueva venta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-card app-card-orders-table shadow-sm mb-5">
+    <div class="app-card-body">
+        <div class="table-responsive">
+            <table class="table app-table-hover mb-0 text-left">
+                <thead>
+                    <tr>
+                        <th class="cell">ID</th>
+                        <th class="cell">Fecha hora</th>
+                        <th class="cell">Vendedor</th>
+                        <th class="cell">Metodo pago</th>
+                        <th class="cell">Total</th>
+                        <th class="cell">Estado</th>
+                        <th class="cell">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="ventas-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<nav class="app-pagination" id="pagination-container">
+    <ul class="pagination justify-content-center" id="pagination-list">
+    </ul>
+</nav>
+
+
+
+<!-- NO se usa modal para crear, sino que reedirige a otra pagina -->
+
+
+<!-- Modal para editar -->
+<div class="modal fade" id="edit-venta-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar venta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-venta-form">
+                    <input type="hidden" id="edit-venta-id">
+                    <div class="mb-3">
+                        <label for="edit-tipo-pago" class="form-label">Metodo pago</label>
+                        <select class="form-select" id="edit-tipo-pago" required>
+                            <option value="">Seleccione un método de pago</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

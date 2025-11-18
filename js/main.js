@@ -42,6 +42,16 @@ const loadContent = async (page) => {
           });
         })
     }
+
+    if(page === 'ventas') {
+      import ('./pages/ventas.js')
+        .then(ventasModule => ventasModule.init());
+    }
+
+    if(page === 'info_venta') {
+      import ('./pages/info_venta.js')
+        .then(infoVentaModule => infoVentaModule.init());
+    }
     // Agregar más módulos según sea necesario
 
   } catch (error) {
