@@ -72,7 +72,7 @@ function convertToCSV(rows, columns) {
 }
 
 function downloadBlob(content, mimeType, filename) {
-  const blob = new Blob([content], { type: mimeType });
+  const blob = new Blob(["\uFEFF" + content], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -95,7 +95,8 @@ function exportToCSV(data, filename = "usuarios.csv") {
   ];
 
   const csv = convertToCSV(data, columns);
-  downloadBlob(csv, "text/csv;charset=utf-8;", filename);
+  downloadBlob(csv, "text/csv;charset=utf-8", filename);
+
 }
 
 async function exportToExcel(data, filename = "usuarios.xlsx") {
@@ -302,6 +303,10 @@ async function init() {
 
   const createModalElement = document.getElementById('create-user-modal');
     createModalInstance = new bootstrap.Modal(createModalElement);
+
+  createModalElement.addEventListener("hidden.bs.modal", () => {
+    document.getElementById("create-user-form").reset();
+  });
 
   const tableBody = document.getElementById('users-table-body');
   if (!tableBody) return;
