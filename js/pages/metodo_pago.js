@@ -200,10 +200,17 @@ async function handleUpdateSubmit(event) {
     await init();  
     applyFilter();
   } catch (error) {
-    console.error(`Error al actualizar método de pago ${metodoId}:`, error);
-    alert('No se pudo actualizar el método de pago.');
+    if (error.message == "El nombre del método de pago ya existe.") {
+      alert('El nombre del método de pago ya está registrado. Por favor, use otro nombre.');
+      return;
+    }
+
+
+    console.error('Error al crear usuario:', error);
+    // alert(error.message || 'No se pudo crear el metodo de pago.');
   }
 }
+
 
 async function handleTableClick(event) {
   const editButton = event.target.closest('.btn-edit-metodo');
@@ -266,11 +273,16 @@ async function handleCreateSubmit(event) {
     await init();
     applyFilter();
   } catch (error) {
-    console.error('Error al crear método de pago:', error);
-    alert('No se pudo crear el método de pago.');
+    if (error.message == "El nombre del método de pago ya existe.") {
+      alert('El nombre del método de pago ya está registrado. Por favor, use otro nombre.');
+      return;
+    }
+
+
+    console.error('Error al crear usuario:', error);
+    // alert(error.message || 'No se pudo crear el metodo de pago.');
   }
 }
-
 
 
 // -----------------------------------------------------
@@ -360,44 +372,3 @@ function applyFilter() {
     ? filteredMetodos.map(createMetodoPagoRow).join('')
     : '<tr><td colspan="5" class="text-center">No hay métodos que coincidan.</td></tr>';
 }
-
-
-// Juanda
-
-// async function cargarMetodosPago() {
-//   try {
-//     const metodosPago = await ventaService.getMetodosPago();
-//     console.log(metodosPago);
-
-//     const selectTipoPago = document.getElementById('edit-tipo-pago');
-
-//     
-//     selectTipoPago.innerHTML = '';
-
-//     if (Array.isArray(metodosPago)) {
-
-//       
-//       const activos = metodosPago.filter(m => m.estado === true);
-
-//       if (activos.length === 0) {
-//         selectTipoPago.innerHTML = '<option disabled>No hay métodos de pago activos</option>';
-//         return;
-//       }
-
-//       // Insertar solo los activos
-//       activos.forEach(metodo => {
-//         const option = document.createElement('option');
-//         option.value = metodo.id_tipo;
-//         option.textContent = metodo.nombre;
-//         selectTipoPago.appendChild(option);
-//       });
-
-//     } else {
-//       selectTipoPago.innerHTML = '<option disabled>No se encontraron métodos de pago</option>';
-//     }
-
-//   } catch (error) {
-//     console.error('Error al cargar los métodos de pago:', error);
-//     alert('Error al cargar los métodos de pago.');
-//   }
-// }
