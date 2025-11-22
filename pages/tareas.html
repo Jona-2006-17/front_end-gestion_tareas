@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-auto">
-          <select class="form-select app-select w-auto" id="filter-estado">
+          <select class="form-select form-select-sm rounded border-secondary shadow-sm bg-white me-2"id="filter-estado">
             <option selected value="all">Todos los estados</option>
             <option value="Asignada">Asignada</option>
             <option value="Pendiente">Pendiente</option>
@@ -31,44 +31,57 @@
         </div>
 
         <div class="col-auto">
-          <button class="btn app-btn-secondary" id="export-csv-btn">Exportar CSV</button>
-        </div>
+                    <div class="btn-group">
+                        <button class="btn app-btn-secondary dropdown-toggle" type="button" id="export-btn"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-file-export me-1"></i> Exportar
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="export-btn">
+                            <li><a class="dropdown-item export-format" href="#" data-format="csv">Exportar CSV</a></li>
+                            <li><a class="dropdown-item export-format" href="#" data-format="excel">Exportar Excel</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
         <div class="col-auto">
-          <button class="btn app-btn-primary"
-            id="btn-open-create"
-            data-bs-toggle="modal"
-            data-bs-target="#create-tarea-modal">
-            Agregar Tarea
-          </button>
-        </div>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#create-tarea-modal"
+                    id="btn-open-create-user"><i class="fa fa-plus me-1"></i>Nueva tarea</button>
+                </div>
 
       </div>
     </div>
   </div>
 </div>
 
-<div class="app-card app-card-orders-table shadow-sm mb-5">
-  <div class="app-card-body">
-    <div class="table-responsive">
-      <table class="table app-table-hover mb-0 text-left app-table">
-        <thead>
-          <tr>
-            <th class="cell">Id tarea</th>
-            <th class="cell">Id usuario</th>
-            <th class="cell">Descripción</th>
-            <th class="cell">Fecha/hora inicio</th>
-            <th class="cell">Fecha/hora fin</th>
-            <th class="cell">Estado</th>
-            <th class="cell">Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tareas-table-body">
-        </tbody>
-      </table>
+<div class="row">
+    <div class="col-12">
+        <div class="app-card app-card-orders-table shadow-sm mb-5">
+            <div class="app-card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-sm mb-0 text-nowrap align-middle">
+                        <thead>
+                            <tr>
+                                <th class="fw-semibold">Id tarea</th>
+                                <th class="fw-semibold">Id usuario</th>
+                                <th class="fw-semibold">Descripción</th>
+                                <th class="fw-semibold">Fecha/hora inicio</th>
+                                <th class="fw-semibold">Fecha/hora fin</th>
+                                <th class="fw-semibold">Estado</th>
+                                <th class="fw-semibold">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tareas-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
-  </div>
 </div>
+
+
 
 <nav class="app-pagination" id="pagination-container">
   <ul class="pagination justify-content-center" id="pagination-list"></ul>
@@ -119,7 +132,7 @@
 
         <div class="modal-footer app-modal-footer">
           <button type="button" class="btn app-btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn app-btn-primary">Crear</button>
+          <button type="submit" class="btn btn-success">Crear</button>
         </div>
       </form>
     </div>
@@ -173,7 +186,7 @@
 
         <div class="modal-footer app-modal-footer">
           <button type="button" class="btn app-btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn app-btn-primary">Guardar</button>
+          <button type="submit" class="btn btn-success">Guardar</button>
         </div>
       </form>
     </div>
