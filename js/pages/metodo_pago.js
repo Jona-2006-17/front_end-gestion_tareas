@@ -219,7 +219,7 @@ async function handleUpdateSubmit(event) {
     }
 
 
-    console.error('Error al crear método de pago:', error);
+    console.error('Error al editar el método de pago:', error);
    
   }
 }
@@ -328,7 +328,7 @@ async function handleCreateSubmit(event) {
     }
 
 
-    console.error('Error al crear método de pago:', error);
+    console.error('Error al crear el método de pago:', error);
     
   }
 }
