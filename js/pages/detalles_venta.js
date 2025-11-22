@@ -100,11 +100,12 @@ function createDetalles() {
             return;
         }
 
+        let descuentoPesos = (precioVenta * valorDescuento)/100; 
         const detallesData = {
             id_producto: idProducto.value,
             cantidad: cantidad,
             id_venta: idVentaReciente, 
-            valor_descuento: valorDescuento,
+            valor_descuento: descuentoPesos,
             precio_venta: precioVenta
         };
         const swalWithBootstrapButtonsCreateDetalle = Swal.mixin({
@@ -204,10 +205,9 @@ function calcularTotal(detalles){
     let totalVenta = 0;
     let totalDescuento = 0;
     detalles.forEach(producto => {
-        let descuento = (producto.precio_venta * producto.valor_descuento) / 100;
-        let subtotal = (producto.precio_venta - descuento) * producto.cantidad;
+        let subtotal = (producto.precio_venta - producto.valor_descuento) * producto.cantidad;
         totalVenta += subtotal;
-        totalDescuento += descuento * producto.cantidad;
+        totalDescuento += producto.valor_descuento * producto.cantidad;
     });
     const descuentoElement = document.getElementById('total-descuento');
     descuentoElement.textContent = `$${totalDescuento.toLocaleString('es-CO')}`;
