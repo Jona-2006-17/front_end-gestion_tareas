@@ -16,7 +16,7 @@ function createUserRow(usuario) {
 
   return `
     <tr>
-      <td class="px-0 text-center">${usuario.nombre}</td>
+      <td class="px-0">${usuario.nombre}</td>
       <td class="px-0">${usuario.documento}</td>
       <td class="px-0">${usuario.email}</td>
       <td class="px-0">${usuario.telefono}</td>
@@ -34,8 +34,8 @@ function createUserRow(usuario) {
       </td>
 
       <td class="px-0 text-center">
-        <button class="btn btn-sm btn-info btn-edit-user" data-user-email="${usuario.email}">
-          <i class="fa-regular fa-pen-to-square"></i>
+        <button class="btn btn-success btn-sm btn-edit-user" aria-label="Editar" data-user-email="${usuario.email}">
+          <i class="fa fa-pen me-0"></i>
         </button>
       </td>
     </tr>
@@ -210,15 +210,32 @@ async function handleUpdateSubmit(event) {
   if (newEmail != originalMail){
     updatedData.email = newEmail;
   }
-
+  const swalWithBootstrapButtonsEdit = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success ms-2",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
   try {
     await userService.updateUser(userId, updatedData);
     modalInstance.hide();
+    document.getElementById('create-user-form').reset();
+    await swalWithBootstrapButtonsEdit.fire({
+      title: "Exito!",
+      text: `Usuario actualizado correctamente.`,
+      icon: "success"
+    });
     await init();
     applyUserFilters();
+    
   } catch (error) {
     console.error(`Error al actualizar usuario ${userId}:`, error);
-    alert('No se pudo actualizar el usuario.');
+    await swalWithBootstrapButtonsEdit.fire({
+      title: "Error",
+      text: "No se pudo actualizar el usuario.",
+      icon: "error"
+    });
   }
 }
 
@@ -241,19 +258,51 @@ async function handleStatusSwitch(event) {
 
   const actionText = newStatus ? 'activar' : 'desactivar';
 
-  if (confirm(`¿Estás seguro de que deseas ${actionText} este usuario?`)) {
-    try {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success ms-2",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
+
+  const resultado = await swalWithBootstrapButtons.fire({
+    title: "¿Estás seguro?",
+    text: `Estás a punto de ${actionText} este usuario.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: `Si, ${actionText}!`,
+    cancelButtonText: "No, cancelar!",
+    reverseButtons: true
+  });
+
+  if(resultado.isConfirmed){
+    try{
       await userService.changeEstatusUser(userId, newStatus);
-      alert(`Usuario ${newStatus ? 'activado' : 'desactivado'} exitosamente.`);
+
+      await swalWithBootstrapButtons.fire({
+        title: "Exito!",
+        text: `Usuario ${newStatus ? 'activado' : 'desactivado'} correctamente.`,
+        icon: "success"
+      });
       await init();
       applyUserFilters();
-    } catch (error) {
+    }catch (error) {
       console.error(`Error al ${actionText} usuario ${userId}:`, error);
-      alert(`No se pudo ${actionText} el usuario.`);
+      await swalWithBootstrapButtons.fire({
+        title: "Error",
+        text: `No se pudo ${actionText} el usuario.`,
+        icon: "error"
+      });
       switchElement.checked = !newStatus;
     }
-  } else {
+  }else{
     switchElement.checked = !newStatus;
+    await swalWithBootstrapButtons.fire({
+      title: "Cancelado",
+      text: "No se realizaron cambios.",
+      icon: "info"
+    });
   }
 }
 
@@ -275,7 +324,13 @@ async function handleCreateSubmit(event) {
     id_rol: parseInt(document.getElementById('create-id_rol').value),
     estado: true
   };
-  
+  const swalWithBootstrapButtonsCreate = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success ms-2",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
   try {
     await userService.createUser(newUserData);
 
@@ -284,13 +339,21 @@ async function handleCreateSubmit(event) {
       createModalInstance.hide();
     }
     
-  document.getElementById('create-user-form').reset();
-  alert('Usuario creado exitosamente.');
-  await init();
-  applyUserFilters();
+    document.getElementById('create-user-form').reset();
+    await swalWithBootstrapButtonsCreate.fire({
+      title: "Exito!",
+      text: `Usuario creado correctamente.`,
+      icon: "success"
+    });
+    await init();
+    applyUserFilters();
   } catch (error) {
     console.error('Error al crear usuario:', error);
-    alert('No se pudo crear el usuario.');
+    await swalWithBootstrapButtonsCreate.fire({
+      title: "Error",
+      text: "No se pudo crear el usuario.",
+      icon: "error"
+    });
   }
 }
 

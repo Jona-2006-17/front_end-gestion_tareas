@@ -5,9 +5,9 @@
 // La importamos para usarla en caso de un error 401.
 import { authService } from './auth.service.js';
 
-const API_BASE_URL = 'https://gestion-tareas-gcbf.onrender.com';
+// const API_BASE_URL = 'https://backend-m4hg.onrender.com';
+const API_BASE_URL = 'https://gestion-tareas-gcbf.onrender.com';/**
 
-/**
  * Cliente central para realizar todas las peticiones a la API.
  * @param {string} endpoint - El endpoint al que se llamará (ej. '/users/get-by-centro').
  * @param {object} [options={}] - Opciones para la petición fetch (method, headers, body).
