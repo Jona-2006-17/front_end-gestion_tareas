@@ -118,8 +118,11 @@ async function handleStatusSwitch(event) {
 
     // Si la venta YA estaba cancelada antes del clic
     if (previousStatus === false && newStatus === true) {
-        alert("La venta ya fue cancelada, no se puede habilitar");
-
+      Swal.fire({
+        icon: "error",
+        title: 'Ups...',
+        text: "La venta ya fue cancelada, no se puede habilitar",
+      });
         switchElement.checked = false;
         return;
     }
@@ -130,13 +133,21 @@ async function handleStatusSwitch(event) {
         )
     ) {
         try {
-        await ventaService.cambiarEstado(ventaId, false);
-        alert("La venta ha sido cancelada exitosamente.");
-        init();
+          await ventaService.cambiarEstado(ventaId, false);
+          Swal.fire({
+            icon: 'success',
+            title: "Exito",
+            text: "Venta cancelada con exito",
+          });
+          init();
         } catch (error) {
-        console.error("Error al cancelar venta:", error);
-        alert("No se pudo cancelar la venta.");
-        switchElement.checked = true; // revertir el cambio
+          console.error("Error al cancelar venta:", error);
+          Swal.fire({
+            icon: "error",
+            title: 'Ups...',
+            text: "No se pudo crear la venta",
+          });
+          switchElement.checked = true; // revertir el cambio
         }
     } else {
         switchElement.checked = true;
@@ -173,7 +184,10 @@ async function handleCreateVentaClick(event) {
         // Guardar en localStorage
         localStorage.setItem('data_venta', JSON.stringify(dataVenta));
         
-        alert("Creando venta...");
+        Swal.fire({
+          icon: 'success',
+          title: "Creando venta...",
+        });
         
         const pageToLoad = event.target.dataset.page;
         loadContent(pageToLoad);
@@ -181,7 +195,11 @@ async function handleCreateVentaClick(event) {
         
     } catch (error) {
         console.error("Error al crear la venta:", error);
-        alert("No se pudo crear la venta.");
+        Swal.fire({
+          icon: "error",
+          title: 'Ups...',
+          text: "No se pudo crear la venta",
+        });
     }
 }
 // async function handleCreateSubmit(event) {
@@ -270,7 +288,11 @@ async function openEditModal(ventaId) {
         modalInstance.show();
     } catch (error) {
         console.error(`Error al obtener datos de la venta ${ventaId}:`, error);
-        alert('No se pudieron cargar los datos de la venta.');
+        Swal.fire({
+          icon: "error",
+          title: 'Ups...',
+          text: "Error al cargar datos de la venta.",
+        });
     }
 }
 
@@ -286,11 +308,19 @@ async function handleUpdateSubmit(event) {
   try {
     await ventaService.updateVenta(ventaId, ventaData);
     modalInstance.hide();
-    alert("Venta actualizada exitosamente.");
+    Swal.fire({
+      icon: 'success',
+      title: "Exito",
+      text: "Venta actualizada exitosamente.",
+    });
     init(); // Recargamos la tabla para ver los cambios
   } catch (error) {
     console.error(`Error al actualizar la venta ${ventaId}:`, error);
-    alert("No se pudo actualizar la venta.");
+    Swal.fire({
+      icon: "error",
+      title: 'Ups...',
+      text: "Error al actualizar venta.",
+    });
   }
 }
 
@@ -317,7 +347,11 @@ async function cargarMetodosPago() {
 
   } catch (error) {
     console.error('Error al cargar los métodos de pago:', error);
-    alert('Error al cargar los métodos de pago.');
+    Swal.fire({
+      icon: "error",
+      title: 'Ups...',
+      text: "Error al cargar los métodos de pago.",
+    });
   }
 };
 
