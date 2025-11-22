@@ -279,10 +279,21 @@ function initModals() {
           if (createModalInst) createModalInst.hide();
           createForm.reset();
           loadPage(1);
-          alert("Tarea creada correctamente.");
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Tarea creada exitosamente",
+            showConfirmButton: false,
+            timer: 1500
+          });
         } catch (err) {
           console.error("Error creando tarea:", err);
-          alert("No se pudo crear la tarea.");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error al crear la tarea!",
+  
+          });
         }
       });
     }
@@ -305,10 +316,19 @@ function initModals() {
           await tareaService.updateById(id, data);
           if (editModalInst) editModalInst.hide();
           loadPage(currentPage);
-          alert("Tarea actualizada correctamente.");
+          Swal.fire({
+            title: "Tarea actualizada exitosamente!",
+            icon: "success",
+            draggable: true
+          });
         } catch (err) {
           console.error("Error actualizar tarea:", err);
-          alert("No se pudo actualizar la tarea.");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No se pudo actualizar la tarea!",
+  
+          });
         }
       });
     }
@@ -323,7 +343,7 @@ function initModals() {
 function openEditModalFromCache(id_tarea) {
   const t = cachedTareas.find(x => x.id_tarea === id_tarea);
   if (!t) {
-    alert("No se encontró la tarea para editar (recarga la página).");
+    Swal.fire("No se encontro tarea 0para editar , recarga la pagina!");
     return;
   }
 
@@ -346,7 +366,7 @@ function openEditModalFromCache(id_tarea) {
   EXPORTAR CSV
 --------------------------------------------------- */
 function exportToCsv(rows, filename = "tareas.csv") {
-  if (!rows || rows.length === 0) return alert("No hay datos para exportar.");
+  if (!rows || rows.length === 0) return Swal.fire({ title: "No hay datos para exportar.", icon: "info" });
 
   const header = Object.keys(rows[0]);
   const csv = [
