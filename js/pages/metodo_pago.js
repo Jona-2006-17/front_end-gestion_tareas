@@ -255,18 +255,17 @@ async function handleStatusSwitch(event) {
 
   // SweetAlert de confirmación
   const result = await Swal.fire({
-    title: `¿Estás seguro?`,
-    text: `¿Deseas ${actionText} este método de pago?`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: `Sí, ${actionText}`,
-    cancelButtonText: "Cancelar",
-    customClass: {
-      confirmButton: "btn btn-success",   // clase de Bootstrap success
-      cancelButton: "btn btn-secondary"   // clase de Bootstrap secondary
-    },
-    buttonsStyling: false  // Importante para que use tus clases y no sobrescriba estilos
-  });
+      title: `¿Estás seguro?`,
+      text: `¿Deseas ${actionText} este método de pago?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: `Sí, ${actionText}`,
+      cancelButtonText: "Cancelar",
+      customClass: {
+        confirmButton: "btn-success",   // agrega solo la clase de color
+        cancelButton: "btn-secondary"   // agrega solo la clase de color
+      }
+    });
 
 
   if (!result.isConfirmed) {
