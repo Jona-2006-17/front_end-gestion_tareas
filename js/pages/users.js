@@ -16,13 +16,13 @@ function createUserRow(usuario) {
 
   return `
     <tr>
-      <td class="px-0">${usuario.nombre}</td>
-      <td class="px-0">${usuario.documento}</td>
-      <td class="px-0">${usuario.email}</td>
-      <td class="px-0">${usuario.telefono}</td>
-      <td class="px-0">${usuario.nombre_rol}</td>
+      <td class="cell">${usuario.nombre}</td>
+      <td class="cell">${usuario.documento}</td>
+      <td class="cell">${usuario.email}</td>
+      <td class="cell">${usuario.telefono}</td>
+      <td class="cell">${usuario.nombre_rol}</td>
 
-      <td class="px-0 text-center">
+      <td class="cell text-center">
         <div class="form-check form-switch">
           <input 
             class="form-check-input user-status-switch"
@@ -33,7 +33,7 @@ function createUserRow(usuario) {
         </div>
       </td>
 
-      <td class="px-0 text-center">
+      <td class="cell text-center">
         <button class="btn btn-success btn-sm btn-edit-user" aria-label="Editar" data-user-email="${usuario.email}">
           <i class="fa-regular fa-pen-to-square"></i>
         </button>
