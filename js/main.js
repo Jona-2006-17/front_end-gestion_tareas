@@ -131,6 +131,8 @@ if (logoutButton) {
 
 window.loadContent = loadContent;
 
+
+
 const buttonPerfil = document.getElementById("buttonPerfil");
 
 buttonPerfil.addEventListener("click", ()=>{
